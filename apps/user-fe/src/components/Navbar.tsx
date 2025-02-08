@@ -1,10 +1,14 @@
 'use client';
-import { signIn } from "next-auth/react";
-import Button from "./Button";
+import { User } from "next-auth";
+import { Button } from "./Button";
+import { navbarOnClick } from "@/lib/actions";
 
-export default function Navbar() {
-    return <div className="flex w-full justify-between px-12 py-5 border-b-2 border-solid items-center">
-        <div className="text-3xl font-bold">Wallet</div>
-        <Button title="login" onClick={()=> signIn()} />
+
+export function Navbar({user}: {user : User|undefined}) {
+
+    return <div className="h-20 border-b-2 flex justify-between items-center px-8">
+        <div className="text-2xl font-bold">Wallet</div>
+        <Button text={user ? "Sign Out " : "Sign In"} onButtonClick={()=> navbarOnClick()} />
     </div>
 }
+

@@ -5,5 +5,6 @@ import { PrismaClient } from "@repo/db/client";
 export default function Home() {
 
     return <>
+    Hello world
     </>
 }
