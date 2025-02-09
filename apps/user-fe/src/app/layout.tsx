@@ -29,15 +29,41 @@ export default async function RootLayout({
 
     const session = await auth();
     const user = session?.user;
+
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <ReduxProvider>
+                    <div className="fixed top-0 left-0 w-full z-30 bg-white">
                         <Navbar user={user} />
-                        <div className="flex flex-row">
-                            {user && <Sidebar />}
+                    </div>
+                    {user && <div className="fixed h-full w-full">
+                        <Sidebar />
+                    </div>
+                    }
+                    <div className="relative ml-20 md:ml-[20%] z-30 mt-20 px-5 pt-10">
+                        {children}
+                    </div>
+                </ReduxProvider>
+            </body>
+        </html>
+    );
+
+    return (
+        <html lang="en">
+            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+                <ReduxProvider>
+                    <div className="fixed top-0 left-0 w-full z-10 bg-white">
+                        <Navbar user={user} />
+                    </div>
+                    <div className="flex flex-row relative">
+                        {user &&
+                            <Sidebar />
+                        }
+                        <div className=" mt-20">
                             {children}
                         </div>
+                    </div>
                 </ReduxProvider>
             </body>
         </html>

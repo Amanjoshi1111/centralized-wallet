@@ -1,11 +1,16 @@
 'use client';
 
 type AuthButton = {
+    className? : string
     text: string,
-    onButtonClick: ()=> void
+    onButtonClick?: ()=> void
 }
-export function Button({ text, onButtonClick }: AuthButton) {
+export function Button({ text, onButtonClick, className }: AuthButton) {
+
+    if(!className){
+        className = "px-6 py-2 border bg-gray-700 hover:bg-gray-900 text-white text-lg rounded-lg";
+    }
     return <>
-        <button className="px-6 py-2 border bg-blue-500 hover:bg-blue-700 text-white text-lg rounded-lg" onClick={onButtonClick}>{text}</button>
+        <button className={className} onClick={onButtonClick}>{text}</button>
     </>
 }

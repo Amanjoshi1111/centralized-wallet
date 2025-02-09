@@ -30,7 +30,7 @@ export function Sidebar() {
 
 
     return <div className="flex flex-col items-center md:items-start w-20 md:w-1/5 h-screen md:pl-10 pt-20 border-r-2 text-xl font-bold space-y-2 text-gray-500 ">
-        {options.map((value, idx) => {
+        {options.map((value,idx) => {
             return <div key={idx} onClick={() => redirect(String(value[2]))}
                 className={`flex space-x-4 md:w-full hover:cursor-pointer
                     ${pathname.includes(String(value[2])) && 'text-violet-500'}
