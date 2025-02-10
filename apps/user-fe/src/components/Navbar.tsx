@@ -1,7 +1,7 @@
 'use client';
 import { User } from "next-auth";
 import { Button } from "./Button";
-import { navbarOnClick } from "@/lib/actions";
+import { navbarOnClick } from "@/lib/actions/navbarOnClick";
 
 
 export function Navbar({ user }: { user: User | undefined }) {

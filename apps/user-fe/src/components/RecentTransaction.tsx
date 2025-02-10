@@ -1,30 +1,41 @@
+
+'use client';
 import { getDateString } from "@/lib/helper";
 import { Card, CardTitle } from "./Card";
+import { OnRampStatus, Prisma, prisma } from "@repo/db/client";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchOnRampTransactions } from "@/redux/slices/onRampTransactionSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+import { useEffect } from "react";
 
 export function RecentTransaction() {
 
-    const date = new Date();
+    const dispatch = useDispatch<AppDispatch>();
+    const onRampTransactionList = useSelector((state: RootState) => state.onRampTransaction);
+
+    useEffect(() => {
+        dispatch(fetchOnRampTransactions());
+    }, [dispatch]);
+
+    console.log("Hello world", { onRampTransactionList });
 
     return <Card width="w-full" height="h-80">
         <CardTitle title={"Recent Transaction"} />
-        <TransactionCard date={date} amount={200} status={Status.Pending} />
-        <TransactionCard date={date} amount={200} status={Status.Success} />
-        <TransactionCard date={date} amount={200} status={Status.Pending} />
-        <TransactionCard date={date} amount={200} status={Status.Failed} />
-        <TransactionCard date={date} amount={200} status={Status.Pending} />
-        <TransactionCard date={date} amount={200} status={Status.Pending} />
+        {onRampTransactionList.map((data) => <TransactionCard date={data.startTime} amount={data.amount / 100} status={data.status} />)}
+        {/* <TransactionCard date={date} amount={200} status={OnRampStatus.Processing} />
+        <TransactionCard date={date} amount={200} status={OnRampStatus.Processing} />
+        <TransactionCard date={date} amount={200} status={OnRampStatus.Success} />
+        <TransactionCard date={date} amount={200} status={OnRampStatus.Processing} />
+        <TransactionCard date={date} amount={200} status={OnRampStatus.Failure} />
+        <TransactionCard date={date} amount={200} status={OnRampStatus.Processing} />
+        <TransactionCard date={date} amount={200} status={OnRampStatus.Processing} /> */}
     </Card>
 }
 
-enum Status {
-    Pending = "Pending",
-    Success = "Success",
-    Failed = "Failed"
-}
 type TransactionCardProps = {
     date: Date,
     amount: number,
-    status: Status
+    status: OnRampStatus
 }
 
 function TransactionCard({ date, amount, status }: TransactionCardProps) {
@@ -36,19 +47,20 @@ function TransactionCard({ date, amount, status }: TransactionCardProps) {
             <div>Received INR</div>
             <div className="text-xs text-gray-600">{getDateString(date)}</div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col items-end">
             <div>{sign} Rs {amount}</div>
             <StatusBar status={status} />
         </div>
     </div>
 }
 
-function StatusBar({ status }: { status: Status }) {
-    if (status == Status.Pending) {
-        return <div className={`text-xs text-white bg-yellow-500 rounded-md text-center`}>{status}</div>
-    } else if (status == Status.Failed) {
-        return <div className={`text-xs text-white bg-red-500 rounded-md text-center`}>{status}</div>
-    } else if (status == Status.Success) {
-        return <div className={`text-xs text-white bg-green-500 rounded-md text-center`}>{status}</div>
+function StatusBar({ status }: { status: OnRampStatus }) {
+
+    if (status == OnRampStatus.Processing) {
+        return <div className={`text-xs text-white px-2 bg-yellow-500 rounded-md text-center`}>Pending</div>
+    } else if (status == OnRampStatus.Failure) {
+        return <div className={`text-xs text-white px-2 bg-red-500 rounded-md text-center`}>Failed</div>
+    } else if (status == OnRampStatus.Success) {
+        return <div className={`text-xs text-white px-2 bg-green-500 rounded-md text-center`}>Success</div>
     }
 }
