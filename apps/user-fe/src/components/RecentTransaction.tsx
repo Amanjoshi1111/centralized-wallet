@@ -17,18 +17,9 @@ export function RecentTransaction() {
         dispatch(fetchOnRampTransactions());
     }, [dispatch]);
 
-    console.log("Hello world", { onRampTransactionList });
-
     return <Card width="w-full" height="h-80">
-        <CardTitle title={"Recent Transaction"} />
-        {onRampTransactionList.map((data) => <TransactionCard date={data.startTime} amount={data.amount / 100} status={data.status} />)}
-        {/* <TransactionCard date={date} amount={200} status={OnRampStatus.Processing} />
-        <TransactionCard date={date} amount={200} status={OnRampStatus.Processing} />
-        <TransactionCard date={date} amount={200} status={OnRampStatus.Success} />
-        <TransactionCard date={date} amount={200} status={OnRampStatus.Processing} />
-        <TransactionCard date={date} amount={200} status={OnRampStatus.Failure} />
-        <TransactionCard date={date} amount={200} status={OnRampStatus.Processing} />
-        <TransactionCard date={date} amount={200} status={OnRampStatus.Processing} /> */}
+        <CardTitle title={"Recent Transaction"} refreshBtn={true} onButtonClick={() => dispatch(fetchOnRampTransactions())} />
+        {onRampTransactionList.map((data) => <TransactionCard key={data.id} date={data.startTime} amount={data.amount / 100} status={data.status} />)}
     </Card>
 }
 
